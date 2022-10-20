@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DailyPoetryM.Models;
 using DailyPoetryM.Services;
 using TheSalLab.MauiInfiniteScrolling;
@@ -52,10 +53,16 @@ public class ResultPageViewModel : ObservableObject
         };
     }
 
+    private RelayCommand _navigateToCommand;
+    public RelayCommand NavigateCommand =>
+        _navigateToCommand ??= new RelayCommand(async () =>
+        {
+            Poetries.Clear();
+            await Poetries.LoadMoreAsync();
+        });
+
     private bool _canLoadMore;
-
     public const int PageSize = 20;
-
     public const string Loading = "正在载入";
     public const string NoResult = "没有满足条件的结果";
     public const string NoMoreResult = "没有更多结果";
