@@ -53,14 +53,29 @@ public class ResultPageViewModel : ObservableObject
                 return poetries;
             }
         };
+
+        _lazyNavigatedToCommand = new Lazy<AsyncRelayCommand>(() =>
+            new AsyncRelayCommand(NavigatedToCommandFunction));
     }
 
-    private RelayCommand _navigatedToCommand;
-    public RelayCommand NavigatedToCommand =>
-        _navigatedToCommand ??= new RelayCommand(async () =>
-        {
-            await NavigatedToCommandFunction();
-        });
+    private Lazy<AsyncRelayCommand> _lazyNavigatedToCommand;
+    public AsyncRelayCommand NavigatedToCommand => _lazyNavigatedToCommand.Value;
+
+    //private AsyncRelayCommand _navigatedToCommand;
+
+    //public AsyncRelayCommand NavigatedToCommand
+    //{
+    //    set => _navigatedToCommand ??= new AsyncRelayCommand(NavigatedToCommandFunction);
+    //}
+
+
+    //private RelayCommand _navigatedToCommand;
+    //public RelayCommand NavigatedToCommand =>
+    //    _navigatedToCommand ??= new RelayCommand(async () =>
+    //    {
+    //        await NavigatedToCommandFunction();
+    //    });
+
     public async Task NavigatedToCommandFunction()
     {
         Poetries.Clear();
