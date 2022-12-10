@@ -5,7 +5,7 @@ using DailyPoetryM.Models;
 using DailyPoetryM.Services;
 using TheSalLab.MauiInfiniteScrolling;
 
-namespace DailyPoetryM.VIewModels;
+namespace DailyPoetryM.ViewModels;
 
 public class ResultPageViewModel : ObservableObject
 {
@@ -36,7 +36,7 @@ public class ResultPageViewModel : ObservableObject
             {
                 Status = Loading;
                 var poetries = (await poetryStorage.GetPoetriesAsync(Where, Poetries.Count, PageSize)).ToList();
-                return poetries;
+                Status = string.Empty;
 
                 if (poetries.Count < PageSize)  //NoMoreResult
                 {
@@ -49,17 +49,23 @@ public class ResultPageViewModel : ObservableObject
                     _canLoadMore = false;
                     Status = NoResult;
                 }
+
+                return poetries;
             }
         };
     }
 
-    private RelayCommand _navigateToCommand;
-    public RelayCommand NavigateCommand =>
-        _navigateToCommand ??= new RelayCommand(async () =>
+    private RelayCommand _navigatedToCommand;
+    public RelayCommand NavigatedToCommand =>
+        _navigatedToCommand ??= new RelayCommand(async () =>
         {
-            Poetries.Clear();
-            await Poetries.LoadMoreAsync();
+            await NavigatedToCommandFunction();
         });
+    public async Task NavigatedToCommandFunction()
+    {
+        Poetries.Clear();
+        await Poetries.LoadMoreAsync();
+    }
 
     private bool _canLoadMore;
     public const int PageSize = 20;

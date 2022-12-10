@@ -8,14 +8,18 @@ namespace DailyPoetryM.UnitTest.Services;
 
 public class PoetryStorageTest : IDisposable
 {
-    public PoetryStorageTest()
+    public static void RemoveDatabaseFile()
     {
         File.Delete(PoetryStorage.PoetryDbPath);
+    }
+    public PoetryStorageTest()
+    {
+        RemoveDatabaseFile();
     }
 
     public void Dispose()
     {
-        File.Delete(PoetryStorage.PoetryDbPath);
+        RemoveDatabaseFile();
     }
 
     [Fact]
@@ -64,7 +68,7 @@ public class PoetryStorageTest : IDisposable
         await poetryStorage.CloesAsync();
     }
 
-    public async Task<PoetryStorage> GetInitializedPoetryStorage()
+    public static async Task<PoetryStorage> GetInitializedPoetryStorage()
     {
         var preferenceStorageMock = new Mock<IPreferenceStorage>();
         var mockPreferenceStorage = preferenceStorageMock.Object;

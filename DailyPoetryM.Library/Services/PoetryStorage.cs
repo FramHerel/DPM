@@ -36,6 +36,11 @@ public class PoetryStorage : IPoetryStorage
         await Connection.Table<Poetry>().Where(where).Skip(skip).Take(take).ToListAsync();
 
     public async Task CloesAsync() => await Connection.CloseAsync();
+
+    public async Task CloseAsync()
+    {
+        await Connection.CloseAsync();
+    }
 }
 
 public static class PoetryStorageConstant
