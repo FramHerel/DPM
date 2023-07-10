@@ -27,8 +27,17 @@ public class ResultPageViewModel : ObservableObject
 
     public MauiInfiniteScrollCollection<Poetry> Poetries { get; }
 
+    //TODO 测试用
+    private readonly IPoetryStorage _poetryStorage;
+
     public ResultPageViewModel(IPoetryStorage poetryStorage)
     {
+        //TODO 测试用
+        Where = Expression.Lambda<Func<Poetry, bool>>(
+                Expression.Constant(true),
+                Expression.Parameter(typeof(Poetry), "p"));
+        _poetryStorage = poetryStorage;
+
         Poetries = new MauiInfiniteScrollCollection<Poetry>
         {
             OnCanLoadMore = () => _canLoadMore,
@@ -78,6 +87,7 @@ public class ResultPageViewModel : ObservableObject
 
     public async Task NavigatedToCommandFunction()
     {
+        await _poetryStorage.InitializedAsync();
         Poetries.Clear();
         await Poetries.LoadMoreAsync();
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:b="clr-namespace:TheSalLab.MauiBehaviors;assembly=TheSalLab.MauiBehaviors"
+             x:Class="DailyPoetryM.Pages.ResultPage"
+             BindingContext="{Binding ResultPageViewModel, Source={StaticResource ServiceLocator}}"
+             Title="ResultPage">
+    <ContentPage.Behaviors>
+        <b:MauiEventHandlerBehavior EventName="NavigatedTo">
+            <b:MauiActionCollection>
+                <b:MauiInvokeCommandAction Command="{Binding NavigatedToCommand}"></b:MauiInvokeCommandAction>
+            </b:MauiActionCollection>
+        </b:MauiEventHandlerBehavior>
+    </ContentPage.Behaviors>
+
+    <ListView ItemsSource="{Binding Poetries}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Label Text="{Binding Name}"></Label>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>
